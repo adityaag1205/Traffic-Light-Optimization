@@ -141,7 +141,7 @@ Reward = -(NS + EW) - 0.5 × |NS - EW| - switching_penalty
 
 ## Screenshot
 
-![Traffic RL Screenshot](screenshot.png)
+![Traffic RL Screenshot](image.png)
 
 ---
 
