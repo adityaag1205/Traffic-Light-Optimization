@@ -23,32 +23,59 @@ ChartJS.register(
 );
 
 function Graph() {
-    const [data, setData] = useState([]);
+    const [rewards, setRewards] = useState([]);
+    const [steps, setSteps] = useState([]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             axios.get("http://127.0.0.1:5000/stats")
-                .then(res => setData(res.data.rewards))
+                .then(res => {
+                    setRewards(res.data.rewards);
+                    setSteps(res.data.steps);
+                })
                 .catch(err => console.error(err));
         }, 2000);
 
         return () => clearInterval(interval);
     }, []);
 
-    if (!data.length) return <h3>Loading graph...</h3>;
+    if (!rewards.length) return <h3>Loading graph...</h3>;
 
     return (
-        <div style={{ width: 600, margin: "auto" }}>
-            <h2> Learning Curve</h2>
+        <div style={{ width: 700, margin: "auto" }}>
+            <h2>Learning Curve</h2>
+
             <Line
                 data={{
-                    labels: data.map((_, i) => i),
-                    datasets: [{
-                        label: "Reward",
-                        data: data,
-                        borderColor: "blue",
-                        tension: 0.3
-                    }]
+                    labels: steps,   // 🔥 FIXED X-AXIS
+                    datasets: [
+                        {
+                            label: "Reward",
+                            data: rewards,
+                            borderColor: "blue",
+                            tension: 0.3
+                        }
+                    ]
+                }}
+                options={{
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Time Steps"
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Reward"
+                            }
+                        }
+                    }
                 }}
             />
         </div>

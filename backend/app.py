@@ -11,6 +11,7 @@ agent = DQNAgent()
 
 state = env.reset()
 reward_history = []
+step_count = 0   
 
 @app.route("/")
 def home():
@@ -18,7 +19,9 @@ def home():
 
 @app.route("/step")
 def step():
-    global state
+    global state, step_count
+
+    step_count += 1   
 
     action = agent.act(state)
     next_state, reward = env.step(action)
@@ -36,8 +39,16 @@ def step():
 
 @app.route("/stats")
 def stats():
+    recent_rewards = reward_history[-100:]
+
+    steps = list(range(
+        step_count - len(recent_rewards) + 1,
+        step_count + 1
+    ))
+
     return jsonify({
-        "rewards": reward_history[-100:]
+        "rewards": recent_rewards,
+        "steps": steps
     })
 
 if __name__ == "__main__":
