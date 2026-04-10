@@ -141,7 +141,7 @@ Reward = -(NS + EW) - 0.5 × |NS - EW| - switching_penalty
 
 ## Screenshot
 
-![Traffic RL Optimisation](image.png)
+![Traffic RL Optimisation](https://raw.githubusercontent.com/adityaag1205/Traffic-Light-Optimization/main/image.png)
 
 ---
 
